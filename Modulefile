@@ -1,0 +1,8 @@
+name            'h0tbird-koan'
+version         '0.0.1'
+source          'https://github.com/h0tbird/puppet-koan'
+author          'Marc Villacorta'
+license         'GPL'
+summary         'Libvirt Module'
+description     'Manages the koan client-side helper.'
+project_page    'https://github.com/h0tbird/puppet-koan'
