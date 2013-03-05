@@ -1,0 +1,7 @@
+#!/bin/sh
+
+lvscan | grep -q "<%= @title %>.<%= @domain %>" && exit
+lvcreate -L <%= @size %>M -n <%= @title %>.<%= @domain %> <%= @volume %>
+koan --server=cobbler.<%= @domain %> --virt --system=<%= @title %>.<%= @domain %>
+virsh console <%= @title %>.<%= @domain %>
+reset

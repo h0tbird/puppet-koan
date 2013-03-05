@@ -40,7 +40,7 @@ class koan (
 
     # Validate parameters:
     validate_re($version, '^present$|^latest$')
-    validate_array($systems)
+    validate_hash($systems)
 
     # Register this module:
     if defined(Class['motd']) { motd::register { $module_name: } }
