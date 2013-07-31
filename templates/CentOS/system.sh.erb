@@ -1,7 +1,25 @@
 #!/bin/sh
 
-lvscan | grep -q "<%= @title %>.<%= @domain %>" && exit
-lvcreate -L <%= @size %>M -n <%= @title %>.<%= @domain %> <%= @volume %>
-koan --server=cobbler.<%= @domain %> --virt --system=<%= @title %>.<%= @domain %>
-virsh console <%= @title %>.<%= @domain %>
-reset
+# Definitions:
+d='<%= @domain %>'
+h="<%= @title %>.${d}"
+v='<%= @volume %>'
+s='<%= @size %>M'
+
+# Whether to destroy the current VM:
+virsh list | grep -q $h && read -p "Destroy current VM? " -n 1 -r
+[[ $REPLY =~ ^[Yy]$ ]] && virsh destroy $h || exit
+
+# Whether to undefine the current VM:
+virsh list --all | grep -q $h && read -p "Undefine current VM? " -n 1 -r
+[[ $REPLY =~ ^[Yy]$ ]] && virsh undefine $h || exit
+
+# Whether to delete the current Logical Volume:
+lvscan | grep -q $h && read -p "Delete current logical volume? " -n 1 -r
+[[ $REPLY =~ ^[Yy]$ ]] && lvremove -f /dev/${v}/${h} || exit
+
+# Provision the new system:
+lvcreate -L $s -n $h $v
+koan --server=cobbler.${d} --virt --system=${h}
+virsh console $h; reset
+virsh start $h
