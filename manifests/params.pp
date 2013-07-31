@@ -20,8 +20,7 @@ class koan::params {
 
         'RedHat': {
             $packages = ['koan']
-            $configs  = [ '/usr/lib/python2.6/site-packages/koan/virtinstall.py',
-                          '/root/systems' ]
+            $configs  = [ '/root/systems' ]
         }
 
         default: { fail("${module_name}::params ${::osfamily} family is not supported yet.") }

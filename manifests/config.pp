@@ -17,20 +17,11 @@ class koan::config {
     $systems   = getvar("${module_name}::systems")
 
     # Install the configuration files:
-    file {
-
-        $configs[0]:
-            ensure  => present,
-            content => template("${templates}/virtinstall.py.erb"),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644';
-
-        $configs[1]:
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755';
+    file { $configs[0]:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755';
     }
 
     # Systems:
